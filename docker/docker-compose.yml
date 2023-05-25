@@ -7,9 +7,9 @@ services:
   db:
     image: postgres
     volumes:
-      - "./data/mongo:/usr/local/pgsql/data"
+      - "./data:/usr/local/pgsql/data"
     ports:
-      - "27017:27017"
+      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=hackburg
 

@@ -32,6 +32,12 @@
 $ pnpm install
 ```
 
+## Prisma
+
+```bash
+$ npx prisma migrate dev --name init
+```
+
 ## Running the app
 
 ```bash
