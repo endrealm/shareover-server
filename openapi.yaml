@@ -22,20 +22,32 @@ paths:
             schema:
               type: object
               properties:
+                username:
+                  type: string
+                  example: "Gandalf der Graue"
+                  maxLength: 20
+                  minLength: 3
+                password:
+                  type: string
+                  example: "Password"
+                  maxLength: 20
+                  minLength: 3
                 location:
                   type: string
                   example: Franz-Mayer-Straße 1, 93053 Regensburg
         required: true
       responses:
         '200':
-          description: Successful operation
+          description: Created account
           content:
             application/json:
-              schema: 
+              schema:
                 type: string
-                example: fojsdoishfiebrapüfojiodgj
+                example: new-auth-token
+                description: The new login token
+
         '400':
-          description: Invalid params  
+          description: Invalid params
   /user:
     get:
       tags:
