@@ -1,7 +1,6 @@
 import { Injectable, NestMiddleware } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
-import { prisma } from "./const";
-import { User } from "@prisma/client";
+import { prisma } from "../const";
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {

@@ -4,7 +4,7 @@ import * as process from "process";
 
 const client = new Client({});
 @Injectable()
-class GeoAPIService {
+export class GeoAPIService {
     test() {
         client
             .elevation({
@@ -20,5 +20,20 @@ class GeoAPIService {
             .catch((e) => {
                 console.log(e.response.data.error_message);
             });
+    }
+
+    async getLatLong(address: string) {
+        const geoData = await client.geocode({
+            params: {
+                address,
+                key: process.env.API_KEY,
+            },
+        });
+
+        const loc = geoData.data.results[0].geometry.location;
+        return {
+            latitude: loc.lat,
+            longitude: loc.lng,
+        };
     }
 }
