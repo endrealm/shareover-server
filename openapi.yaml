@@ -7,6 +7,7 @@ servers:
   - url: http://localhost:3000
 tags:
   - name: user
+  - name: offer
 paths:
   /user/create:
     put:
@@ -48,22 +49,25 @@ paths:
 
         '400':
           description: Invalid params
-  /user:
+  /offer/list/nearby:
     get:
       tags:
-        - user
-      summary: Get user information
-      description: Get user information belonging to token
-      operationId: getUser
+        - offer
+      summary: Get all offers near to current location
       responses:
-        '200':
-          description: Successful operation
+        200:
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
-        '400':
-          description: Invalid params
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+
+
+
+
+
 components:
   securitySchemes:
     bearerAuth:
@@ -71,6 +75,15 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    OfferLocation:
+      type: object
+      properties:
+        id:
+          type: string
+        lat:
+          type: number
+        lon:
+          type: number
     Order:
       type: object
       properties:
@@ -99,8 +112,6 @@ components:
             - delivered
         complete:
           type: boolean
-      xml:
-        name: order
 
 security:
   - bearerAuth: []
