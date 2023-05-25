@@ -1,0 +1,15 @@
+version: "3.2"
+services:
+  # server:
+  #   image: "redis:alpine"
+  #   ports:
+  #     - "80:3000"
+  db:
+    image: postgres
+    volumes:
+      - "./data/mongo:/usr/local/pgsql/data"
+    ports:
+      - "27017:27017"
+    environment:
+      - POSTGRES_PASSWORD=hackburg
+
