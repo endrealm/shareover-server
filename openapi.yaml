@@ -74,7 +74,72 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Order"
+                  $ref: "#/components/schemas/OfferLocation"
+
+  /offer/list/:id:
+    get:
+      tags:
+        - offer
+      summary: Gets all open offers for a user
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Offer"
+  /offer/:id:
+    post:
+      tags:
+        - offer
+      summary: Claim offer parts
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+        - name: amount
+          in: query
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+  /offer:
+    put:
+      tags:
+        - offer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                units:
+                  type: integer
+                categoryId:
+                  type: string
+                product:
+                  type: string
+                from:
+                  type: string
+                  description: "Date string"
+                  example: "iso-date-string"
+                to:
+                  type: string
+                  description: "Date string"
+                  example: "iso-date-string"
+
+      responses:
+        200:
+          description: Success
 
 
 
@@ -96,6 +161,25 @@ components:
           type: number
         lon:
           type: number
+    Offer:
+      type: object
+      properties:
+        id:
+          type: string
+        units:
+          type: integer
+        categoryId:
+          type: string
+        product:
+          type: string
+        from:
+          type: string
+          description: "Date string"
+          example: "iso-date-string"
+        to:
+          type: string
+          description: "Date string"
+          example: "iso-date-string"
     Order:
       type: object
       properties:
