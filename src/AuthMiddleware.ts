@@ -1,6 +1,8 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from './const';
+import { User } from '@prisma/client';
+
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -14,11 +16,16 @@ export class AuthMiddleware implements NestMiddleware {
 
         const user = await prisma.user.findUnique({
             where: {
-                token: "mytoken"
+                token
             }
         })
-        console.log('Request...');
-        console.log(user);
+        if(!user) {
+            res.status(401);
+            res.end();
+            return;
+        }
+
+        req.user = user;
         next();
     }
 }
