@@ -8,7 +8,7 @@ async function bootstrap() {
   const user = await prisma.user.create({
     data: {
       name: 'Alice',
-      email: 'alice@prisma.io',
+      email: 'deeznuts@prisma.io',
     },
   })
 

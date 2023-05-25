@@ -7,7 +7,7 @@ services:
   db:
     image: postgres
     volumes:
-      - "./data:/usr/local/pgsql/data"
+      - "./data:/var/lib/pgsql/data"
     ports:
       - "5432:5432"
     environment:
