@@ -38,7 +38,7 @@ export class UserController {
         let token: string;
         do {
             token = uuidv4()
-        } while(!(await prisma.user.findUnique({where: {token}})))
+        } while(await prisma.user.findUnique({where: {token}}))
         return token;
     }
 
