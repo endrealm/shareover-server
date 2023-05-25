@@ -32,13 +32,18 @@
 $ pnpm install
 ```
 
-## Prisma
-
 ```bash
-$ npx prisma migrate dev --name init
+$ pnpm install
 ```
 
+## Prisma
+
 ## Running the app
+
+Set environment variable to google api key
+```
+API_KEY=YOUR KEY HERE
+```
 
 ```bash
 # development
