@@ -49,6 +49,18 @@ paths:
 
         '400':
           description: Invalid params
+  /user/me:
+    get:
+      tags:
+        - user
+      summary: Get current user
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
   /offer/list/nearby:
     get:
       tags:
