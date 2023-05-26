@@ -60,7 +60,7 @@ export class OfferController {
                 id: {
                     // 5 what? meters? kilometers???
                     in: (
-                        await this.findOfferNear(latitude, longitude, 5)
+                        await this.findOfferNear(latitude, longitude, 10000)
                     ).map(({ id }) => id),
                 },
                 units: {
@@ -148,7 +148,7 @@ export class OfferController {
         const subsNear = await this.findSubNear(
             user.latitude,
             user.longitude,
-            5,
+            10000,
             offer.categoryId
         );
 
