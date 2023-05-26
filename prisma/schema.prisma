@@ -45,6 +45,7 @@ model Notification {
   user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
   offer     Offer  @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  createdAt DateTime
   offerId   Int
   location  String
   latitude  Float
