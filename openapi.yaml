@@ -77,7 +77,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/OfferLocation"
 
-  /offer/list/:id:
+  /offer/list/{id}:
     get:
       tags:
         - offer
@@ -85,6 +85,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           schema:
             type: integer
       responses:
@@ -96,7 +97,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Offer"
-  /offer/:id:
+  /offer/{id}:
     post:
       tags:
         - offer
@@ -104,6 +105,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           schema:
             type: integer
         - name: amount
@@ -184,12 +186,13 @@ paths:
       responses:
         200:
           description: "Success"
-  /notification/:id:
+  /notification/{id}:
     delete:
       description: "Delete a notification"
       parameters:
         - name: "id"
           in: path
+          required: true
           schema:
             type: string
             description: "Id of notification to remove"
