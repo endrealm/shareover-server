@@ -143,6 +143,24 @@ paths:
           description: Success
 
   /notification:
+    post:
+      description: "Set notification settings"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                range:
+                  type: integer
+                  description: "Range in meters to receive notifications from home"
+                categories:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        200:
+          description: "Success"
     get:
       description: "Get all unread user notifications"
       parameters:

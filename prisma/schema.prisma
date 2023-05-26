@@ -19,11 +19,13 @@ model User {
   longitude     Float
   offers        Offer[]
   notifications Notification[]
+  subscriptions Subscription[]
 }
 
 model Category {
-  id     String  @id
-  offers Offer[]
+  id            String        @id
+  offers        Offer[]
+  subscriptions Subscription[]
 }
 
 model Offer {
@@ -47,4 +49,15 @@ model Notification {
   location  String
   latitude  Float
   longitude Float
+}
+
+model Subscription {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String
+  location   String
+  latitude   Float
+  longitude  Float
 }
