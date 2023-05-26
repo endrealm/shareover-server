@@ -68,6 +68,17 @@ paths:
       tags:
         - offer
       summary: Get all offers near to current location
+      parameters:
+        - name: lat
+          required: true
+          in: query
+          schema:
+            type: number
+        - name: lng
+          required: true
+          in: query
+          schema:
+            type: number
       responses:
         200:
           description: Success
