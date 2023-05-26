@@ -34,6 +34,7 @@ model Offer {
   userId        Int
   category      Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId    String
+  product    String
   units         Int
   location      String
   latitude      Float
@@ -48,9 +49,6 @@ model Notification {
   offer     Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
   createdAt DateTime
   offerId   Int
-  location  String
-  latitude  Float
-  longitude Float
 }
 
 model Subscription {
