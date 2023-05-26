@@ -28,8 +28,40 @@ type Offer = z.infer<typeof Offer>;
 
 @Controller("offer")
 export class OfferController {
+    private async findNear(
+        latitude: number,
+        longitude: number,
+        radius: number
+    ) {
+        return await prisma.$queryRaw<
+            { id: number }[]
+        >`SELECT id, items FROM "Chef" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius})`;
+    }
+
     @Get("list/nearby")
-    nearby(@Req() req: Request) {}
+    async nearby(@Req() req: Request) {
+        const user = req.user;
+
+        const offers = await prisma.offer.findMany({
+            where: {
+                id: {
+                    // 5 what? meters? kilometers???
+                    in: (
+                        await this.findNear(user.latitude, user.longitude, 5)
+                    ).map(({ id }) => id),
+                },
+            },
+        });
+
+        return offers.map((offer) => {
+            return {
+                id: offer.id,
+                latitude: offer.latitude,
+                longitude: offer.longitude,
+                location: offer.location,
+            };
+        });
+    }
 
     @Get("list/:id")
     list(@Req() req: Request, @Param() params) {
