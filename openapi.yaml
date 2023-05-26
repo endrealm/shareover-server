@@ -8,7 +8,7 @@ servers:
 tags:
   - name: user
   - name: offer
-  - name: notifications
+  - name: notification
 paths:
   /user/create:
     put:
@@ -146,6 +146,8 @@ paths:
 
   /notification:
     post:
+      tags:
+        - notification
       description: "Set notification settings"
       requestBody:
         content:
@@ -164,6 +166,8 @@ paths:
         200:
           description: "Success"
     get:
+      tags:
+        - notification
       description: "Get all unread user notifications"
       parameters:
         - name: "since"
@@ -182,12 +186,16 @@ paths:
                 items:
                   $ref: "#/components/schemas/Offer"
     delete:
+      tags:
+        - notification
       description: "Delete all notifications"
       responses:
         200:
           description: "Success"
   /notification/{id}:
     delete:
+      tags:
+        - notification
       description: "Delete a notification"
       parameters:
         - name: "id"
