@@ -1,5 +1,4 @@
 #!/bin/bash
-dirLocation=$(dirname "$0")
 modules=("server")
 
 if [ $# -eq 0 ]
@@ -19,6 +18,6 @@ if [[ ! " ${modules[@]} " =~ " $1 " ]]; then
     exit 1
 fi
 
-echo "Starting build..."
-docker build -t "docker.endrealm.net/shareover/$1" -f "${dirLocation}/$1.Dockerfile" "${dirLocation}/.."
-echo "Ended build..."
+echo "Pushing..."
+docker push "docker.endrealm.net/shareover/$1:latest"
+echo "Done..."

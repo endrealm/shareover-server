@@ -17,4 +17,6 @@ RUN pnpm run build
 
 FROM node:18.13.0
 COPY --from=builder /work/dist /app
-CMD ["pnpm", "run", "migrate", "&&", "node", "/app/main.js"]
+RUN npm install -g pnpm
+
+CMD ["sleep", "4", "&&", "pnpm", "run", "migrate", "&&", "node", "/app/main.js"]
