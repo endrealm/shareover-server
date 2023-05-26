@@ -1,15 +1,14 @@
 version: "3.2"
 services:
-  # server:
-  #   image: "redis:alpine"
-  #   ports:
-  #     - "80:3000"
-  db:
-    image: postgres
-    volumes:
-      - "./data:/var/lib/postgresql/data"
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=hackburg
-
+    # server:
+    #   image: "redis:alpine"
+    #   ports:
+    #     - "80:3000"
+    db:
+        image: postgis/postgis
+        volumes:
+            - "./data:/var/lib/postgresql/data"
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_PASSWORD=hackburg
