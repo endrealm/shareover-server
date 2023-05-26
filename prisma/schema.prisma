@@ -11,10 +11,40 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  token String  @unique
-  name  String
+  id            Int            @id @default(autoincrement())
+  token         String         @unique
+  name          String
+  location      String
+  latitude      Float
+  longitude     Float
+  offers        Offer[]
+  notifications Notification[]
+}
+
+model Category {
+  id     String  @id
+  offers Offer[]
+}
+
+model Offer {
+  id            Int            @id @default(autoincrement())
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        Int
+  category      Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId    String
+  location      String
+  latitude      Float
+  longitude     Float
+  notifications Notification[]
+}
+
+model Notification {
+  id        Int    @id @default(autoincrement())
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  offer     Offer  @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  offerId   Int
   location  String
-  latitude Float
+  latitude  Float
   longitude Float
 }
