@@ -44,9 +44,10 @@ export class OfferController {
         radius: number,
         categoryId: string
     ) {
+        // AND "categoryId"='${categoryId}'
         return await prisma.$queryRaw<
             { userId: number; categoryId: string }[]
-        >`SELECT "userId", "categoryId" FROM "Subscription" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius}) AND "categoryId"=${categoryId}`;
+        >`SELECT "userId", "categoryId" FROM "Subscription" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius})`;
     }
 
     @Get("list/nearby")
@@ -123,6 +124,8 @@ export class OfferController {
                 },
             },
         });
+
+        return "ok";
     }
 
     @Put()
@@ -152,15 +155,15 @@ export class OfferController {
             offer.categoryId
         );
 
-        subsNear.forEach((sub) => {
-            prisma.notification.create({
+        for (const sub of subsNear) {
+            await prisma.notification.create({
                 data: {
                     userId: sub.userId,
                     offerId: offer.id,
                     createdAt,
                 },
             });
-        });
+        }
 
         return offer.id;
     }

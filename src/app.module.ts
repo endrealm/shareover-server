@@ -5,6 +5,7 @@ import { AuthMiddleware } from "./middleware/AuthMiddleware";
 import { GeoAPIService } from "./services/GeoAPIService";
 import { OfferController } from "./controllers/OfferController";
 import { ConfigModule } from "@nestjs/config";
+import { NotificationController } from "./controllers/NotificationController";
 
 @Module({
     imports: [
@@ -12,7 +13,7 @@ import { ConfigModule } from "@nestjs/config";
             envFilePath: [".env", ".env.local"],
         }),
     ],
-    controllers: [UserController, OfferController],
+    controllers: [UserController, OfferController, NotificationController],
     providers: [AppService, GeoAPIService],
 })
 export class AppModule {
