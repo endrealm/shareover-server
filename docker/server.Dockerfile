@@ -1,22 +1,12 @@
-FROM node:18.13.0 as builder
+FROM node:18.13.0
 RUN npm install -g pnpm
 
-COPY ./pnpm-lock.yaml /work/
-COPY ./package.json /work/
+COPY ./pnpm-lock.yaml /app/
+COPY ./package.json /app/
 
-WORKDIR /work
+WORKDIR /app
 RUN pnpm install
 
-COPY ./prisma /work/
+COPY ./ /app
 
-RUN pnpm run generate
-
-COPY ./ /work
-RUN pnpm run build
-
-
-FROM node:18.13.0
-COPY --from=builder /work/dist /app
-RUN npm install -g pnpm
-
-CMD ["sleep", "4", "&&", "pnpm", "run", "migrate", "&&", "node", "/app/main.js"]
+CMD ["bash", "-c", "sleep 4 && pnpm run migrate && pnpm run start"]
