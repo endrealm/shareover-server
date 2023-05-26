@@ -54,12 +54,13 @@ model Notification {
 }
 
 model Subscription {
-  id         Int      @id @default(autoincrement())
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     Int
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId String
-  location   String
   latitude   Float
   longitude  Float
+  radius     Int
+
+  @@id([userId, categoryId])
 }
