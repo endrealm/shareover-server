@@ -18,7 +18,7 @@ export class UserController {
 
     @Get("me")
     me(@Req() req: Request): string {
-        return "cool user";
+        return req.user.id + "";
     }
 
     @Put("create")

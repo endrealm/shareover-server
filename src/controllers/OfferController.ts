@@ -35,7 +35,7 @@ export class OfferController {
     ) {
         return await prisma.$queryRaw<
             { id: number }[]
-        >`SELECT id FROM "Offer" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius})`;
+        >`SELECT "id" FROM "Offer" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius})`;
     }
 
     private async findSubNear(
@@ -46,7 +46,7 @@ export class OfferController {
     ) {
         return await prisma.$queryRaw<
             { userId: number; categoryId: string }[]
-        >`SELECT userId, categoryId FROM "Subscription" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius}) AND categoryId=${categoryId}`;
+        >`SELECT "userId", "categoryId" FROM "Subscription" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius}) AND "categoryId"=${categoryId}`;
     }
 
     @Get("list/nearby")
@@ -73,7 +73,7 @@ export class OfferController {
 
         return offers.map((offer) => {
             return {
-                id: offer.id,
+                id: offer.userId,
                 latitude: offer.latitude,
                 longitude: offer.longitude,
                 location: offer.location,
@@ -83,7 +83,7 @@ export class OfferController {
 
     @Get("list/:id")
     async list(@Req() req: Request, @Param() params) {
-        const id: number = OfferId.parse(params.id);
+        const id: number = z.coerce.number().positive().parse(params.id);
         const offers = await prisma.offer.findMany({
             where: {
                 userId: id,
