@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Put, Query, Req } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+    Query,
+    Req,
+} from "@nestjs/common";
 import { prisma } from "../const";
 import { Request } from "express";
 import { OfferDTO } from "../dto/OfferDTO";
@@ -80,5 +90,34 @@ export class NotificationController {
                 })
         );
         await Promise.all(parts);
+    }
+
+    @Delete()
+    public async deleteAll(@Req() request: Request) {
+        await prisma.notification.deleteMany({
+            where: {
+                userId: request.user.id,
+            },
+        });
+    }
+
+    @Delete(":id")
+    public async deleteOne(
+        @Req() request: Request,
+        @Param() notificationId: string
+    ) {
+        const parser = z.preprocess(
+            (a) => parseInt(z.string().parse(a), 10),
+            z.number().positive()
+        );
+
+        const id = parser.parse(notificationId);
+
+        await prisma.notification.deleteMany({
+            where: {
+                id: id,
+                userId: request.user.id,
+            },
+        });
     }
 }
