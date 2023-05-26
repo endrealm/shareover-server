@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "../const";
 import { v4 as uuidv4 } from "uuid";
 import { GeoAPIService } from "../services/GeoAPIService";
+import { Request } from "express";
 
 const UserCreateData = z.object({
     username: z.string(),
