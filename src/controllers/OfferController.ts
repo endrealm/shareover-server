@@ -72,8 +72,8 @@ export class OfferController {
         return offers.map((offer) => {
             return {
                 id: offer.userId,
-                latitude: offer.latitude,
-                longitude: offer.longitude,
+                lat: offer.latitude,
+                lon: offer.longitude,
                 location: offer.location,
             };
         });
