@@ -35,7 +35,7 @@ export class OfferController {
     ) {
         return await prisma.$queryRaw<
             { id: number }[]
-        >`SELECT id, items FROM "Chef" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius})`;
+        >`SELECT id FROM "Offer" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius})`;
     }
 
     @Get("list/nearby")
