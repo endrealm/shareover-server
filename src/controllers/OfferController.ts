@@ -47,7 +47,7 @@ export class OfferController {
         // AND "categoryId"='${categoryId}'
         return await prisma.$queryRaw<
             { userId: number; categoryId: string }[]
-        >`SELECT "userId", "categoryId" FROM "Subscription" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius})`;
+        >`SELECT "userId", "categoryId" FROM "Subscription" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius}) AND "categoryId" = ${categoryId}`;
     }
 
     @Get("list/nearby")
