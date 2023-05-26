@@ -8,6 +8,7 @@ servers:
 tags:
   - name: user
   - name: offer
+  - name: notifications
 paths:
   /user/create:
     put:
@@ -141,7 +142,44 @@ paths:
         200:
           description: Success
 
-
+  /notification:
+    get:
+      description: "Get all unread user notifications"
+      parameters:
+        - name: "since"
+          in: query
+          required: false
+          schema:
+            type: string
+            description: "iso time stamp since when to check for notifications"
+      responses:
+        200:
+          description: "Returns all notifications"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Offer"
+    delete:
+      description: "Delete all notifications"
+      responses:
+        200:
+          description: "Success"
+  /notification/:id:
+    delete:
+      description: "Delete a notification"
+      parameters:
+        - name: "id"
+          in: path
+          schema:
+            type: string
+            description: "Id of notification to remove"
+      responses:
+        200:
+          description: "success"
+        404:
+          description: "notification not found"
 
 
 
@@ -166,6 +204,8 @@ components:
       properties:
         id:
           type: string
+        ownerId:
+          type: string
         units:
           type: integer
         categoryId:
@@ -180,34 +220,6 @@ components:
           type: string
           description: "Date string"
           example: "iso-date-string"
-    Order:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        petId:
-          type: integer
-          format: int64
-          example: 198772
-        quantity:
-          type: integer
-          format: int32
-          example: 7
-        shipDate:
-          type: string
-          format: date-time
-        status:
-          type: string
-          description: Order Status
-          example: approved
-          enum:
-            - placed
-            - approved
-            - delivered
-        complete:
-          type: boolean
 
 security:
   - bearerAuth: []
