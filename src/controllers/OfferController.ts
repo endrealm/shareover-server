@@ -50,6 +50,9 @@ export class OfferController {
                         await this.findNear(user.latitude, user.longitude, 5)
                     ).map(({ id }) => id),
                 },
+                units: {
+                    gt: 0,
+                },
             },
         });
 
@@ -64,8 +67,28 @@ export class OfferController {
     }
 
     @Get("list/:id")
-    list(@Req() req: Request, @Param() params) {
+    async list(@Req() req: Request, @Param() params) {
         const id: number = OfferId.parse(params.id);
+        const offers = await prisma.offer.findMany({
+            where: {
+                userId: id,
+                units: {
+                    gt: 0,
+                },
+            },
+        });
+
+        return offers.map((offer) => {
+            return {
+                id: offer.id,
+                ownerId: offer.userId,
+                units: offer.units,
+                categoryId: offer.categoryId,
+                product: offer.product,
+                from: offer.from,
+                to: offer.to,
+            };
+        });
     }
 
     @Post(":id")
