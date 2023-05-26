@@ -50,19 +50,17 @@ export class OfferController {
     }
 
     @Get("list/nearby")
-    async nearby(@Req() req: Request) {
+    async nearby(@Req() req: Request, @Query("lat") lat, @Query("lng") long) {
         const user = req.user;
+        const latitude = z.coerce.number().parse(lat);
+        const longitude = z.coerce.number().parse(long);
 
         const offers = await prisma.offer.findMany({
             where: {
                 id: {
                     // 5 what? meters? kilometers???
                     in: (
-                        await this.findOfferNear(
-                            user.latitude,
-                            user.longitude,
-                            5
-                        )
+                        await this.findOfferNear(latitude, longitude, 5)
                     ).map(({ id }) => id),
                 },
                 units: {
