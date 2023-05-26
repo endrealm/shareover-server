@@ -1,43 +1,65 @@
-import { Body, Controller, Get, Param, Post, Put, Req } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Post,
+    Put,
+    Query,
+    Req,
+} from "@nestjs/common";
 import { prisma } from "../const";
 import { z } from "zod";
-import "../types"
+import "../types";
 import { Request } from "express";
+import { AppModule } from "src/app.module";
 
-const OfferId = z.number();
+const OfferId = z.coerce.number();
 
-const Ofer = z.object({
+const Offer = z.object({
     units: z.number(),
     categoryId: z.string(),
     product: z.string(),
-    from: z.date(),
-    to: z.date()
-})
+    from: z.coerce.date(),
+    to: z.coerce.date(),
+});
 
-type Offer = z.infer<typeof Ofer>
+type Offer = z.infer<typeof Offer>;
 
 @Controller("offer")
 export class OfferController {
-
     @Get("list/nearby")
-    nearby(@Req() req: Request) {
-
-    }
+    nearby(@Req() req: Request) {}
 
     @Get("list/:id")
     list(@Req() req: Request, @Param() params) {
         const id: number = OfferId.parse(params.id);
-
     }
 
     @Post(":id")
-    claim(@Req() req: Request, @Param() params) {
+    async claim(
+        @Req() req: Request,
+        @Param() params,
+        @Query("amount") am: number
+    ) {
         const id: number = OfferId.parse(params.id);
+        const amount: number = z.coerce.number().positive().parse(am);
+
+        await prisma.offer.update({
+            where: {
+                id,
+            },
+            data: {
+                units: {
+                    decrement: amount,
+                },
+            },
+        });
     }
 
     @Put()
     async create(@Req() req: Request, @Body() body: Offer): Promise<number> {
-        const input: Offer = Ofer.parse(body);
+        const input: Offer = Offer.parse(body);
         const user = req.user;
         const offer = await prisma.offer.create({
             data: {
@@ -49,10 +71,9 @@ export class OfferController {
                 location: user.location,
                 from: input.from,
                 to: input.to,
-                categoryId: input.categoryId
-            }
-        })
+                categoryId: input.categoryId,
+            },
+        });
         return offer.id;
     }
-
 }

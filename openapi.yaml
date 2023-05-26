@@ -135,11 +135,11 @@ paths:
                 from:
                   type: string
                   description: "Date string"
-                  example: "iso-date-string"
+                  example: "2011-10-05T14:48:00.000Z"
                 to:
                   type: string
                   description: "Date string"
-                  example: "iso-date-string"
+                  example: "2030-10-05T14:48:00.000Z"
 
       responses:
         200:
@@ -249,11 +249,11 @@ components:
         from:
           type: string
           description: "Date string"
-          example: "iso-date-string"
+          example: "2011-10-05T14:48:00.000Z"
         to:
           type: string
           description: "Date string"
-          example: "iso-date-string"
+          example: "2011-10-05T14:48:00.000Z"
 
 security:
   - bearerAuth: []
