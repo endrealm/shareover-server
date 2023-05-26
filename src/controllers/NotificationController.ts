@@ -25,7 +25,7 @@ type NotificationSettings = z.infer<typeof NotificationSettings>;
 export class NotificationController {
     @Get("")
     public async getAll(
-        @Query("since") since: string,
+        @Query("since") since: string | undefined,
         @Req() request: Request
     ): Promise<OfferDTO[]> {
         let date = new Date(since);
