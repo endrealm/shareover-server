@@ -28,7 +28,7 @@ type Offer = z.infer<typeof Offer>;
 
 @Controller("offer")
 export class OfferController {
-    private async findNear(
+    private async findOfferNear(
         latitude: number,
         longitude: number,
         radius: number
@@ -36,6 +36,17 @@ export class OfferController {
         return await prisma.$queryRaw<
             { id: number }[]
         >`SELECT id FROM "Offer" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius})`;
+    }
+
+    private async findSubNear(
+        latitude: number,
+        longitude: number,
+        radius: number,
+        categoryId: string
+    ) {
+        return await prisma.$queryRaw<
+            { userId: number; categoryId: string }[]
+        >`SELECT userId, categoryId FROM "Subscription" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius}) AND categoryId=${categoryId}`;
     }
 
     @Get("list/nearby")
@@ -47,7 +58,11 @@ export class OfferController {
                 id: {
                     // 5 what? meters? kilometers???
                     in: (
-                        await this.findNear(user.latitude, user.longitude, 5)
+                        await this.findOfferNear(
+                            user.latitude,
+                            user.longitude,
+                            5
+                        )
                     ).map(({ id }) => id),
                 },
                 units: {
@@ -129,6 +144,26 @@ export class OfferController {
                 categoryId: input.categoryId,
             },
         });
+
+        const createdAt = new Date();
+
+        const subsNear = await this.findSubNear(
+            user.latitude,
+            user.longitude,
+            5,
+            offer.categoryId
+        );
+
+        subsNear.forEach((sub) => {
+            prisma.notification.create({
+                data: {
+                    userId: sub.userId,
+                    offerId: offer.id,
+                    createdAt,
+                },
+            });
+        });
+
         return offer.id;
     }
 }
