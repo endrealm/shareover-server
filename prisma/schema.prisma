@@ -34,7 +34,9 @@ model Offer {
   userId        Int
   category      Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId    String
-  product    String
+  product       String
+  from          DateTime
+  to            DateTime
   units         Int
   location      String
   latitude      Float
