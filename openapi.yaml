@@ -63,6 +63,25 @@ paths:
             application/json:
               schema:
                 type: string
+  /user/{id}:
+    get:
+      tags:
+        - user
+      summary: Get a users public info by id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
   /offer/list/nearby:
     get:
       tags:
@@ -244,6 +263,15 @@ components:
           type: number
         lon:
           type: number
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+        location:
+          type: string
+        username:
+          type: string
     Offer:
       type: object
       properties:
