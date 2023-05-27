@@ -72,7 +72,7 @@ export class OfferController {
 
         return offers.map((offer) => {
             return {
-                id: offer.userId,
+                id: offer.userId.toString(),
                 lat: offer.latitude,
                 lon: offer.longitude,
                 location: offer.location,
@@ -94,7 +94,7 @@ export class OfferController {
 
         return offers.map((offer) => {
             return {
-                id: offer.id,
+                id: offer.id.toString(),
                 ownerId: offer.userId,
                 units: offer.units,
                 categoryId: offer.categoryId,
