@@ -24,7 +24,7 @@ export class UserController {
 
     @Get(":id")
     async getUser(@Param() params) {
-        const id = params.id;
+        const id = z.coerce.number().parse(params.id);
 
         const user = await prisma.user.findUnique({
             where: {
