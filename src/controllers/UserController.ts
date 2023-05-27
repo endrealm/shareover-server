@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Put, Req } from "@nestjs/common";
+import { Body, Controller, Get, Param, Put, Req } from "@nestjs/common";
 import { z } from "zod";
 import { prisma } from "../const";
 import { v4 as uuidv4 } from "uuid";
 import { GeoAPIService } from "../services/GeoAPIService";
 import { Request } from "express";
+import { get } from "http";
 
 const UserCreateData = z.object({
     username: z.string(),
@@ -19,6 +20,23 @@ export class UserController {
     @Get("me")
     me(@Req() req: Request): string {
         return req.user.id + "";
+    }
+
+    @Get(":id")
+    async getUser(@Param() params) {
+        const id = params.id;
+
+        const user = await prisma.user.findUnique({
+            where: {
+                id
+            }
+        });
+
+        return {
+            id,
+            location: user.location,
+            username: user.name,
+        }
     }
 
     @Put("create")
